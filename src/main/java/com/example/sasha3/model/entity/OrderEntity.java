@@ -15,7 +15,7 @@ public class OrderEntity extends BaseEntity<String> {
     @DateTimeFormat(pattern = "YYYY-MM-dd")
     private LocalDate date;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.ALL})
     @JsonManagedReference
     private List<OrderLink> products;
 }

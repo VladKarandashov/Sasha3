@@ -28,7 +28,7 @@ public class ProductEntity extends BaseEntity<String> {
     @ManyToOne(cascade = {CascadeType.ALL})
     private DeliveryTypeEntity deliveryType;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
     @JsonManagedReference
     private List<OrderLink> orders;
 }

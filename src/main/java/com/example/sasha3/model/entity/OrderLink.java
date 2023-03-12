@@ -16,7 +16,9 @@ public class OrderLink {
     private Integer count;
 
     @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
     @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 }
