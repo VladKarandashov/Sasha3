@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Экспорт</title>
+    <link rel="stylesheet" href="/css/bar.css"/>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">БД Мануфактура</a>
+    <a href="/editor">Ввод</a>
+    <a href="/search">Поиск</a>
+    <a href="/statistic">Статистика</a>
+    <a href="/help">Помощь</a>
+    <a href="/export">Выгрузка БД</a>
+</div>
+<br>
+<button onclick="exportProducts()">Выгрузка файла БД</button>
+<br>
+<br>
+<table DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Вес</th>
+        <th>Дата</th>
+        <th>Срок гарантии</th>
+
+        <th>Тип гарантии</th>
+        <th>Тип продукта</th>
+        <th>Директор линии</th>
+        <th>Тип доставки</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.title}"></td>
+        <td th:text="${product.weight}"></td>
+        <td th:text="${product.date}"></td>
+        <td th:text="${product.warrantyPeriod}"></td>
+
+        <td th:text="${product.warrantyType != null} ? ${product.warrantyType.title} : '-'"></td>
+        <td th:text="${product.productType != null} ? ${product.productType.title} : '-'"></td>
+        <td th:text="${product.productLine != null} ? ${product.productLine.title} : '-'"></td>
+        <td th:text="${product.deliveryType != null} ? ${product.deliveryType.title} : '-'"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    function exportProducts() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/export' + '/file', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</html>
