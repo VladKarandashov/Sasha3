@@ -4,6 +4,6 @@ import com.example.sasha3.model.BaseEntity;
 import jakarta.persistence.Entity;
 
 @Entity
-public class WarrantyTypeEntity extends BaseEntity<String> {
+public class WarrantyTypeEntity extends BaseEntity {
 
 }

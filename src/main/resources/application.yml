@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 
   datasource:
     url: jdbc:mysql://81.200.145.234:3306/default_db

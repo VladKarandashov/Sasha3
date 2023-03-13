@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика</title>
+    <link rel="stylesheet" href="/css/bar.css"/>
+    <script>
+        function drawTable(counts) {
+            let textHTML = "";
+            textHTML += "<table DIR=LTR BORDER><thead><tr>"
+            textHTML += "<th>Тип продукта</th>"
+            textHTML += "<th>Количество заказов</th>"
+            textHTML += "</tr></thead><tbody>"
+
+            for (let my of counts) {
+                textHTML += "<tr>"
+                textHTML += "<td>"+my.productTypeTitle+"</td>"
+                textHTML += "<td>"+my.count+"</td>"
+                textHTML += "</tr>"
+            }
+            textHTML += "</tbody></table>"
+            return textHTML;
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function drawDiagram(counts) {
+            // Получение данных из таблицы
+            const labels = [];
+            const data = [];
+            for (let my of counts) {
+                labels.push(my.productTypeTitle);
+                data.push(my.count);
+            }
+
+            // Создание круговой диаграммы
+            const ctx = document.createElement('canvas').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            '#f17f97',
+                            '#1b7ec7',
+                            '#FFCE56',
+                            '#00C851',
+                            '#76cae8',
+                            '#e53935',
+                            '#1b691d',
+                            '#fb8c00',
+                            '#8e24aa',
+                            '#6d4c41'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    legend: {
+                        position: 'right'
+                    },
+                    responsive: false
+                }
+            });
+
+            // Добавление диаграммы на страницу
+            return ctx.canvas;
+        }
+    </script>
+    <script>
+        const listStr = "[[${statistics}]]";
+        const dataJson = listStr.replaceAll("&quot;", "\"");
+        console.log(dataJson)
+        const data = JSON.parse(dataJson);
+
+        // Класс Genre
+        class MyCount {
+            constructor(productTypeTitle, count) {
+                this.productTypeTitle = productTypeTitle;
+                this.count = count;
+            }
+        }
+
+        const counts = [];
+        for (let item of data) {
+            const my = new MyCount(item.productTypeTitle, item.count);
+            counts.push(my);
+        }
+        console.log(counts)
+    </script>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">БД Мануфактура</a>
+    <a href="/editor">Ввод</a>
+    <a href="/search">Поиск</a>
+    <a href="/statistic">Статистика</a>
+    <a href="/help">Помощь</a>
+    <a href="/export">Выгрузка БД</a>
+</div>
+
+<h1>Статистика</h1>
+<br>
+<label>Всего производственных линий:</label>
+<span th:text="${countProductLines}"></span>
+<br>
+<label>Всего типов продукции:</label>
+<span th:text="${countProductTypes}"></span>
+<br>
+<label>Всего различных наименований продуктов:</label>
+<span th:text="${countProducts}"></span>
+<br>
+<label>Всего заказов:</label>
+<span th:text="${countOrders}"></span>
+<br>
+<table>
+    <tr>
+        <td id="table-cell"></td>
+        <td id="diagram-cell"></td>
+    </tr>
+</table>
+</body>
+<script>
+    // Получаем ссылки на ячейки таблицы
+    const tableCell = document.getElementById("table-cell");
+    const diagramCell = document.getElementById("diagram-cell");
+
+    // Вставляем результаты функций в соответствующие ячейки таблицы
+    tableCell.innerHTML = drawTable(counts);
+    diagramCell.appendChild(drawDiagram(counts));
+</script>
+</html>

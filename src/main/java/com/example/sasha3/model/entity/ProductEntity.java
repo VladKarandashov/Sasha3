@@ -2,25 +2,23 @@ package com.example.sasha3.model.entity;
 
 import com.example.sasha3.model.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Data
 @Entity
-public class ProductEntity extends BaseEntity<String> {
+public class ProductEntity extends BaseEntity {
     private Double weight;
     @DateTimeFormat(pattern = "YYYY-MM-dd")
     private LocalDate date;
+    private Integer warrantyPeriod;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     private ProductTypeEntity productType;
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private WarrantyPeriodEntity warrantyPeriod;
     @ManyToOne(cascade = {CascadeType.ALL})
     private ProductLineEntity productLine;
     @ManyToOne(cascade = {CascadeType.ALL})
@@ -28,7 +26,7 @@ public class ProductEntity extends BaseEntity<String> {
     @ManyToOne(cascade = {CascadeType.ALL})
     private DeliveryTypeEntity deliveryType;
 
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderLink> orders;
 }
