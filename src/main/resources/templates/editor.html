@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактор</title>
+    <link rel="stylesheet" href="/css/bar.css"/>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">БД Мануфактура</a>
+    <a href="/editor">Ввод</a>
+    <a href="/search">Поиск</a>
+    <a href="/statistic">Статистика</a>
+    <a href="/help">Помощь</a>
+    <a href="/export">Выгрузка БД</a>
+</div>
+<table>
+    <tr>
+        <td>
+            <table DIR=LTR BORDER>
+                <thead>
+                <tr>
+                    <th>Инструменты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${firstId})}">
+                            <button id="flash-back" title="К первому">
+                                <img src="/images/flash-back.png" width="30" alt="к первому"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${prevId})}">
+                            <button id="back" title="Назад">
+                                <img src="/images/back.png" width="30" alt="предыдущий"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <button title="Сохранить" id="save" onclick="onClickSave()">
+                            <img src="/images/img.png" width="30" alt="сохранить"/>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${nextId})}">
+                            <button title="Вперёд" id="forward"><img src="/images/forward.png" width="30" alt="следующий"/></button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=${lastId})}">
+                            <button title="К последнему" id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="к последнему"/>
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table>
+                <tbody>
+                <tr>
+                    <td style="text-align: center">
+                        <h1>Редактор продуктов</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <p id="productID"><span th:text="${product.id}"></span></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="title">Название</label><br>
+                        <input id="title" title="начните с большой буквы или цифры" name="title" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" required type="text" th:field="${product.title}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="weight">Вес товара</label><br>
+                        <input id="weight" name="weight" type="number" th:field="${product.weight}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="date">Дата</label><br>
+                        <input id="date" name="date" type="date" th:field="${product.date}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <label for="warrantyPeriod">Гарантийный период (мес)</label><br>
+                        <input id="warrantyPeriod" name="warrantyPeriod" type="number" th:field="${product.warrantyType}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        fdskjvnkjfds
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        fdvnlkds
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        fdnolkfndlk
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        fdskjvnkjfds
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        fdvnlkds
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
