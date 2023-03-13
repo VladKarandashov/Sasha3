@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+    <link rel="stylesheet" href="/css/bar.css"/>
+</head>
+<body>
+<div class="navbar">
+    <a href="/">БД Мануфактура</a>
+    <a href="/editor">Ввод</a>
+    <a href="/search">Поиск</a>
+    <a href="/statistic">Статистика</a>
+    <a href="/help">Помощь</a>
+    <a href="/export">Выгрузка БД</a>
+</div>
+<table class="center" id="myTable">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Поле выбора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form action="/search">
+        <tr>
+            <td><label for="productType">Тип продукта:</label></td>
+            <td>
+                <select id="productType" name="productType" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="productType : ${productTypes}"
+                            th:value="${productType.id}"
+                            th:selected="${productType.id == idProductType}"
+                            th:text="${productType.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="deliveryType">Тип доставки:</label></td>
+            <td>
+                <select id="deliveryType" name="deliveryType" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="deliveryType : ${deliveryTypes}"
+                            th:value="${deliveryType.id}"
+                            th:selected="${deliveryType.id == idDeliveryType}"
+                            th:text="${deliveryType.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="warrantyType">Тип гарантии:</label></td>
+            <td>
+                <select id="warrantyType" name="warrantyType" onchange="this.form.submit()">
+                    <option th:value="0">Любой</option>
+                    <option th:each="warrantyType : ${warrantyTypes}"
+                            th:value="${warrantyType.id}"
+                            th:selected="${warrantyType.id == idWarrantyType}"
+                            th:text="${warrantyType.title}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+    </form>
+    </tbody>
+</table>
+<br>
+<table DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Вес</th>
+        <th>Дата</th>
+        <th>Срок гарантии</th>
+
+        <th>Тип гарантии</th>
+        <th>Тип продукта</th>
+        <th>Директор линии</th>
+        <th>Тип доставки</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.title}"></td>
+        <td th:text="${product.weight}"></td>
+        <td th:text="${product.date}"></td>
+        <td th:text="${product.warrantyPeriod}"></td>
+
+        <td th:text="${product.warrantyType != null} ? ${product.warrantyType.title} : '-'"></td>
+        <td th:text="${product.productType != null} ? ${product.productType.title} : '-'"></td>
+        <td th:text="${product.productLine != null} ? ${product.productLine.title} : '-'"></td>
+        <td th:text="${product.deliveryType != null} ? ${product.deliveryType.title} : '-'"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
