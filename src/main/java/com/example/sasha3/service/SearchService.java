@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
@@ -48,16 +49,19 @@ public class SearchService {
 
         var productTypes = products.stream()
                 .map(ProductEntity::getProductType)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(ProductTypeEntity::getTitle))
                 .toList();
         var deliveryTypes = products.stream()
                 .map(ProductEntity::getDeliveryType)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(DeliveryTypeEntity::getTitle))
                 .toList();
         var warrantyTypes = products.stream()
                 .map(ProductEntity::getWarrantyType)
+                .filter(Objects::nonNull)
                 .distinct()
                 .sorted(Comparator.comparing(WarrantyTypeEntity::getTitle))
                 .toList();
