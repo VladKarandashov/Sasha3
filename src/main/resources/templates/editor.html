@@ -107,13 +107,38 @@
                         <label for="title">Название (с большой буквы или цифры)</label><br>
                         <input id="title" title="начните с большой буквы или цифры" name="title"
                                pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}" required type="text"
-                               th:field="${product.title}"/>
+                               th:field="${product.title}" oninput="checkTitle()"/>
+                        <script>
+                            function checkTitle(){
+                                const titleElement = document.getElementById("title");
+                                const titleValue = titleElement.value
+                                if(/[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}/.test(titleValue) === false || titleValue === ''){
+                                    titleElement.className = 'empty_field'
+                                }
+                                else{
+                                    titleElement.className = ''
+                                }
+                            }
+                        </script>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="weight">Вес товара (кг, от 0 до 50)</label><br>
-                        <input id="weight" name="weight" type="number" required th:field="${product.weight}" min="0" max="50"/>
+                        <input id="weight" name="weight" type="number" required th:field="${product.weight}" min="0" max="50" oninput="checkWeight()"/>
+                        <script>
+                            function checkWeight(){
+                                const weightElement = document.getElementById("weight");
+                                const weightValue = weightElement.value
+                                if((! /^\d+(\.\d+)*$/.test(weightValue)) || 0 > weightValue || weightValue > 50 || weightValue === ''){
+                                    weightElement.className = 'empty_field'
+                                    console.log("гавно")
+                                } else{
+                                    weightElement.className = ''
+                                    console.log("заебись")
+                                }
+                            }
+                        </script>
                     </td>
                 </tr>
                 <tr>
@@ -126,7 +151,19 @@
                     <td style="text-align: center">
                         <label for="warrantyPeriod">Гарантийный период (мес от 0 до 60)</label><br>
                         <input id="warrantyPeriod" name="warrantyPeriod" type="number"
-                               th:field="${product.warrantyPeriod}" min="0" max="60"/>
+                               th:field="${product.warrantyPeriod}" min="0" max="60" required oninput="checkPeriod()"/>
+                        <script>
+                            function checkPeriod(){
+                                const warrantyPeriodElement = document.getElementById("warrantyPeriod");
+                                const warrantyPeriodValue = warrantyPeriodElement.value
+                                if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue === ''){
+                                    warrantyPeriodElement.className = 'empty_field'
+                                }
+                                else{
+                                    warrantyPeriodElement.className = ''
+                                }
+                            }
+                        </script>
                     </td>
                 </tr>
                 <tr>
@@ -329,8 +366,8 @@
         const deliveryTypeIdValue = deliveryTypeElement.value
         const warrantyTypeIdValue = warrantyTypeElement.value
 
-        fieldError = false;
-        if(/[A-ZА-Я0-9]/.test(titleValue[0]) == false || titleValue == ''){
+        let fieldError = false;
+        if(/[A-ZА-Я0-9]/.test(titleValue[0]) === false || titleValue === ''){
             fieldError = true
             titleElement.className = 'empty_field'
         }
@@ -338,7 +375,7 @@
             fieldError = false
             titleElement.className = ''
         }
-        if(/^\d+(\.\d+)*$/.test(weightValue) == false || 0 > weightValue || weightValue > 50 || weightValue == ''){
+        if(/^\d+(\.\d+)*$/.test(weightValue) === false || 0 > weightValue || weightValue > 50 || weightValue === ''){
             fieldError = true
             weightElement.className = 'empty_field'
         }
@@ -347,7 +384,7 @@
             weightElement.className = ''
         }
 
-        if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue == ''){
+        if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue === ''){
             fieldError = true
             warrantyPeriodElement.className = 'empty_field'
         }
@@ -355,7 +392,7 @@
             fieldError = false
             warrantyPeriodElement.className = ''
         }
-        if(dateValue == ''){
+        if(dateValue === ''){
             fieldError = true
             dateElement.className = 'empty_field'
         }
@@ -364,7 +401,7 @@
             dateElement.className = ''
         }
 
-        if(fieldError == true){
+        if(fieldError === true){
             alert("Проверьте правильность ввода данных!")
         }
         else{
