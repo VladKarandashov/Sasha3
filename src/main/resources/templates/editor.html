@@ -20,6 +20,8 @@
     <a href="/help">Помощь</a>
     <a href="/export">Выгрузка БД</a>
 </div>
+<h1>БД Мануфактура</h1>
+<br>
 <table>
     <tr>
         <td>
@@ -200,17 +202,14 @@
 <script>
     async function onClickPlus(url, idSelect) {
         let title = prompt("Введите новое значение (с большой буквы или цифры):");
-        while (!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}$/.test(title) && title !== null && title !== "") {
-            title = prompt("Введите новое значение (с большой буквы или цифры):");
-        }
-        if (title == null || title === "") {
-            alert("Неправильное значение")
+        if ((!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}$/.test(title)) || title === null || title === "") {
+            alert("Введите правильное значение (с большой буквы или цифры)")
             return;
         }
         const res = await sendPostRequest(url, title);
         console.log(res)
         if (res == null) {
-            alert("Неправильное значение")
+            alert("Неправильное значение - ответ сервера")
             return;
         }
         const select = document.getElementById(idSelect);
