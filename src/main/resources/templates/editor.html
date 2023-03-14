@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="/css/bar.css"/>
 </head>
 <body>
+<style type="text/css">
+    .empty_field {
+          border-width: 2px;
+          border-color: red; background-color : pink;
+    }
+</style>
 <div class="navbar">
     <a href="/">БД Мануфактура</a>
     <a href="/editor">Ввод</a>
@@ -96,7 +102,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="title">Название</label><br>
+                        <label for="title">Название (с большой буквы или цифры)</label><br>
                         <input id="title" title="начните с большой буквы или цифры" name="title"
                                pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}" required type="text"
                                th:field="${product.title}"/>
@@ -104,7 +110,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="weight">Вес товара (кг)</label><br>
+                        <label for="weight">Вес товара (кг, от 0 до 50)</label><br>
                         <input id="weight" name="weight" type="number" required th:field="${product.weight}" min="0" max="50"/>
                     </td>
                 </tr>
@@ -116,7 +122,7 @@
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="warrantyPeriod">Гарантийный период (мес)</label><br>
+                        <label for="warrantyPeriod">Гарантийный период (мес от 0 до 60)</label><br>
                         <input id="warrantyPeriod" name="warrantyPeriod" type="number"
                                th:field="${product.warrantyPeriod}" min="0" max="60"/>
                     </td>
@@ -323,6 +329,45 @@
         const productLineIdValue = productLineElement.value
         const deliveryTypeIdValue = deliveryTypeElement.value
         const warrantyTypeIdValue = warrantyTypeElement.value
+
+        fieldError = false;
+        if(/[A-ZА-Я0-9]/.test(titleValue[0]) == false || titleValue == ''){
+            fieldError = true
+            titleElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            titleElement.className = ''
+        }
+        if(0 > weightValue || weightValue > 50 || weightValue == ''){
+            fieldError = true
+            weightElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            weightElement.className = ''
+        }
+
+        if(0 > warrantyPeriodValue || warrantyPeriodValue > 50 || warrantyPeriodValue == ''){
+            fieldError = true
+            warrantyPeriodElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            warrantyPeriodElement.className = ''
+        }
+        if(dateValue == ''){
+            fieldError = true
+            dateElement.className = 'empty_field'
+        }
+        else{
+            fieldError = false
+            dateElement.className = ''
+        }
+        if(fieldError == true){
+            alert("Проверьте правильность ввода данных!")
+            return
+        }
 
         const data = {
             id: idValue,
