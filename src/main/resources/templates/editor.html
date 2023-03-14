@@ -363,33 +363,34 @@
             fieldError = false
             dateElement.className = ''
         }
+
         if(fieldError == true){
             alert("Проверьте правильность ввода данных!")
-            return
         }
+        else{
+            const data = {
+                id: idValue,
+                title: titleValue,
+                weight: weightValue,
+                date: dateValue,
+                warrantyPeriod: warrantyPeriodValue,
 
-        const data = {
-            id: idValue,
-            title: titleValue,
-            weight: weightValue,
-            date: dateValue,
-            warrantyPeriod: warrantyPeriodValue,
+                productType: productTypeIdValue,
+                productLine: productLineIdValue,
+                deliveryType: deliveryTypeIdValue,
+                warrantyType: warrantyTypeIdValue,
+            };
 
-            productType: productTypeIdValue,
-            productLine: productLineIdValue,
-            deliveryType: deliveryTypeIdValue,
-            warrantyType: warrantyTypeIdValue,
-        };
+            const res = await sendSaveRequest(data);
 
-        const res = await sendSaveRequest(data);
-
-        console.log(res)
-        if (res == null) {
-            alert("Возникла проблема с вашими полями")
-            return;
+            console.log(res)
+            if (res == null) {
+                alert("Возникла проблема с вашими полями")
+                return;
+            }
+            console.log("reboot")
+            window.location.href = '/editor/'+res.id;
         }
-        console.log("reboot")
-        window.location.href = '/editor/'+res.id;
     }
 
     async function sendSaveRequest(data) {
