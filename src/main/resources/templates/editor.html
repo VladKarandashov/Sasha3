@@ -105,7 +105,7 @@
                 <tr>
                     <td style="text-align: center">
                         <label for="weight">Вес товара (кг)</label><br>
-                        <input id="weight" name="weight" type="number" required th:field="${product.weight}"/>
+                        <input id="weight" name="weight" type="number" required th:field="${product.weight}" min="0" max="50"/>
                     </td>
                 </tr>
                 <tr>
@@ -118,7 +118,7 @@
                     <td style="text-align: center">
                         <label for="warrantyPeriod">Гарантийный период (мес)</label><br>
                         <input id="warrantyPeriod" name="warrantyPeriod" type="number"
-                               th:field="${product.warrantyPeriod}"/>
+                               th:field="${product.warrantyPeriod}" min="0" max="60"/>
                     </td>
                 </tr>
                 <tr>

@@ -1,5 +1,6 @@
 package com.example.sasha3.model.dto;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -18,10 +19,12 @@ public class MiniProductDto {
     @NotBlank
     private String title;
     @Min(0)
+    @Max(50)
     private Double weight;
     @DateTimeFormat(pattern = "YYYY-MM-dd")
     private LocalDate date;
     @Min(0)
+    @Max(60)
     private Integer warrantyPeriod;
 
     private Long productType;
