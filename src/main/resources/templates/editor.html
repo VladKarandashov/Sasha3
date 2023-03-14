@@ -52,16 +52,30 @@
                 <tr>
                     <td style="text-align: center">
                         <a th:href="@{/editor/{id}(id=${nextId})}">
-                            <button title="Вперёд" id="forward"><img src="/images/forward.png" width="30" alt="следующий"/></button>
+                            <button title="Вперёд" id="forward"><img src="/images/forward.png" width="30"
+                                                                     alt="следующий"/></button>
                         </a>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <a th:href="@{/editor/{id}(id=${lastId})}">
-                            <button title="К последнему" id="flash-forward"><img src="/images/flash-forward.png" width="30" alt="к последнему"/>
+                            <button title="К последнему" id="flash-forward"><img src="/images/flash-forward.png"
+                                                                                 width="30" alt="к последнему"/>
                             </button>
                         </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <a th:href="@{/editor/{id}(id=0)}">
+                            <button id="new-product" class="carte">Новый продукт</button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <button id="delete-product" class="carte" onclick="onClickDelete()">Удалить</button>
                     </td>
                 </tr>
                 </tbody>
@@ -83,50 +97,92 @@
                 <tr>
                     <td style="text-align: center">
                         <label for="title">Название</label><br>
-                        <input id="title" title="начните с большой буквы или цифры" name="title" pattern="[А-ЯA-Z0-9][а-яa-z0-9]*" required type="text" th:field="${product.title}"/>
+                        <input id="title" title="начните с большой буквы или цифры" name="title"
+                               pattern="[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}" required type="text"
+                               th:field="${product.title}"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        <label for="weight">Вес товара</label><br>
-                        <input id="weight" name="weight" type="number" th:field="${product.weight}"/>
+                        <label for="weight">Вес товара (кг)</label><br>
+                        <input id="weight" name="weight" type="number" required th:field="${product.weight}"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="date">Дата</label><br>
-                        <input id="date" name="date" type="date" th:field="${product.date}"/>
+                        <input id="date" name="date" type="date" required th:field="${product.date}"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
                         <label for="warrantyPeriod">Гарантийный период (мес)</label><br>
-                        <input id="warrantyPeriod" name="warrantyPeriod" type="number" th:field="${product.warrantyPeriod}"/>
+                        <input id="warrantyPeriod" name="warrantyPeriod" type="number"
+                               th:field="${product.warrantyPeriod}"/>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        fdskjvnkjfds
+                        <label for="productType">Тип продукта</label><br>
+                        <select size="1" id="productType" name="productType">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="productType : ${productTypes}"
+                                    th:value="${productType.id}"
+                                    th:selected="${productType.id == product.productType.id}"
+                                    th:text="${productType.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/productType', 'productType')">+
+                        </button>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        fdvnlkds
+                        <label for="productLine">Директор линии</label><br>
+                        <select size="1" id="productLine" name="productLine">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="productLine : ${productLines}"
+                                    th:value="${productLine.id}"
+                                    th:selected="${productLine.id == product.productLine.id}"
+                                    th:text="${productLine.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/productLine', 'productLine')">+
+                        </button>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        fdnolkfndlk
+                        <label for="deliveryType">Тип доставки</label><br>
+                        <select size="1" id="deliveryType" name="deliveryType">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="deliveryType : ${deliveryTypes}"
+                                    th:value="${deliveryType.id}"
+                                    th:selected="${deliveryType.id == product.deliveryType.id}"
+                                    th:text="${deliveryType.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/deliveryType', 'deliveryType')">+
+                        </button>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center">
-                        fdskjvnkjfds
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: center">
-                        fdvnlkds
+                        <label for="warrantyType">Тип гарантии</label><br>
+                        <select size="1" id="warrantyType" name="warrantyType">
+                            <option th:value="0">Выбрать</option>
+                            <option th:each="warrantyType : ${warrantyTypes}"
+                                    th:value="${warrantyType.id}"
+                                    th:selected="${warrantyType.id == product.warrantyType.id}"
+                                    th:text="${warrantyType.title}">
+                            </option>
+                        </select>
+                        <button title="Добавить" type="button"
+                                onclick="onClickPlus('/miniCreate/warrantyType', 'warrantyType')">+
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -135,4 +191,110 @@
     </tr>
 </table>
 </body>
+<script>
+    async function onClickPlus(url, idSelect) {
+        let title = prompt("Введите новое значение (с большой буквы или цифры):");
+        while (!/^[A-ZА-Я0-9][a-zA-ZА-Яа-я0-9]{0,49}$/.test(title) && title !== null && title !== "") {
+            title = prompt("Введите новое значение (с большой буквы или цифры):");
+        }
+        if (title == null || title === "") {
+            alert("Неправильное значение")
+            return;
+        }
+        const res = await sendPostRequest(url, title);
+        console.log(res)
+        if (res == null) {
+            alert("Неправильное значение")
+            return;
+        }
+        const select = document.getElementById(idSelect);
+        clearSelectExcept0(select);
+        addElementsToSelect(select, res)
+        if (idSelect === "selectOptions") select.value = "0";
+        alert("Успешно добавлено")
+    }
+
+    function clearSelectExcept0(selectEl) {
+        const options = selectEl.querySelectorAll("option");
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value !== "0") {
+                options[i].remove();
+            }
+        }
+    }
+
+    function addElementsToSelect(selectEl, res) {
+        const myList = res.list
+        myList.forEach(function (element) {
+            const option = document.createElement("option");
+            option.value = element.id;
+            if (selectEl.id === "selectOptions") option.value = element.title
+            option.text = element.title;
+            if (res.selected.id === element.id) option.selected = true;
+            selectEl.add(option);
+        });
+    }
+
+    async function sendPostRequest(url, myTitle) {
+        console.log("Функция вызвана")
+        const data = {title: myTitle};
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
+<script>
+    async function onClickDelete() {
+        const accept = confirm("Хотите удалить эту запись?");
+        if(accept===false) return;
+
+        const idElement = document.getElementById("productID");
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        if (idValue === "0") return;
+        const data = {
+            id: idValue
+        };
+        const res = await sendDeleteRequest(data);
+        window.location.href = '/editor';
+    }
+    async function sendDeleteRequest(data) {
+        console.log("Функция удаления вызвана")
+        try {
+            const response = await fetch("/product/delete", {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
 </html>

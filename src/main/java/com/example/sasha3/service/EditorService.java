@@ -1,20 +1,27 @@
 package com.example.sasha3.service;
 
 import com.example.sasha3.model.entity.*;
-import com.example.sasha3.model.repository.ProductRepository;
+import com.example.sasha3.model.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class EditorService {
 
     private final ProductRepository productRepository;
+    private final ProductTypeRepository productTypeRepository;
+    private final ProductLineRepository productLineRepository;
+    private final DeliveryTypeRepository deliveryTypeRepository;
+    private final WarrantyTypeRepository warrantyTypeRepository;
+    private final OrderRepository orderRepository;
 
     public Long getFirstProduct() {
         return productRepository.findFirstRowId();
@@ -52,5 +59,18 @@ public class EditorService {
         }
 
         model.addAttribute("product", product);
+
+        model.addAttribute("productTypes", productTypeRepository.findAll().stream()
+                .sorted(Comparator.comparing(ProductTypeEntity::getTitle))
+                .collect(Collectors.toList()));
+        model.addAttribute("productLines", productLineRepository.findAll().stream()
+                .sorted(Comparator.comparing(ProductLineEntity::getTitle))
+                .collect(Collectors.toList()));
+        model.addAttribute("deliveryTypes", deliveryTypeRepository.findAll().stream()
+                .sorted(Comparator.comparing(DeliveryTypeEntity::getTitle))
+                .collect(Collectors.toList()));
+        model.addAttribute("warrantyTypes", warrantyTypeRepository.findAll().stream()
+                .sorted(Comparator.comparing(WarrantyTypeEntity::getTitle))
+                .collect(Collectors.toList()));
     }
 }

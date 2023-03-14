@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class BaseEntity {
+public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +20,15 @@ public abstract class BaseEntity {
 
     public BaseEntity(String title) {
         this.title = title;
+    }
+
+    public BaseEntity(Object obj) {
+        if (obj instanceof BaseEntity baseEntity) {
+            this.id = baseEntity.getId();
+            this.title = baseEntity.getTitle();
+        } else {
+            throw new RuntimeException("Это не BaseEntity!");
+        }
     }
 
     @Override

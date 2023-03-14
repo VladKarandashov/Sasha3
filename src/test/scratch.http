@@ -1,0 +1,7 @@
+### Тест удаление
+POST http://localhost:8080/product/delete
+Content-Type: application/json
+
+{
+  "id": 5
+}
