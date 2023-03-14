@@ -22,7 +22,6 @@ public class StatisticsController {
         model.addAttribute("countProductLines", statisticService.countProductLine());
         model.addAttribute("countProductTypes", statisticService.countProductType());
         model.addAttribute("countProducts", statisticService.countProduct());
-        model.addAttribute("countOrders", statisticService.countOrder());
 
         model.addAttribute("statistics", statisticService.jsonStatistics());
 

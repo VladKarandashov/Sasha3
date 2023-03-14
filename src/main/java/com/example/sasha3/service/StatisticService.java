@@ -45,7 +45,7 @@ public class StatisticService {
                 .map(productType ->
                         new CountOrdersByProductType(
                                 productType.getTitle(),
-                                getCountOrdersByProductType(productType)
+                                getCountProductsByProductType(productType)
                         )
                 ).collect(Collectors.toList());
     }
@@ -56,10 +56,7 @@ public class StatisticService {
     }
 
 
-    public Long getCountOrdersByProductType(ProductTypeEntity productType) {
-        return productRepository.findAllByProductType(productType).parallelStream()
-                .mapToLong(product ->
-                        product.getOrders().stream().mapToLong(OrderLink::getCount).sum()
-                ).sum();
+    public Long getCountProductsByProductType(ProductTypeEntity productType) {
+        return (long) productRepository.findAllByProductType(productType).size();
     }
 }
