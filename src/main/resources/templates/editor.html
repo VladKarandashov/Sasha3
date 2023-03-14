@@ -297,4 +297,78 @@
         }
     }
 </script>
+<script>
+    async function onClickSave() {
+        const accept = confirm("Хотите сохранить изменения?");
+        if(accept===false) return;
+
+        const idElement = document.getElementById("productID");
+        const titleElement = document.getElementById("title");
+        const weightElement = document.getElementById("weight");
+        const dateElement = document.getElementById("date");
+        const warrantyPeriodElement = document.getElementById("warrantyPeriod");
+
+        const productTypeElement = document.getElementById("productType");
+        const productLineElement = document.getElementById("productLine");
+        const deliveryTypeElement = document.getElementById("deliveryType");
+        const warrantyTypeElement = document.getElementById("warrantyType");
+
+        const idValue = idElement.getElementsByTagName("span")[0].innerHTML;
+        const titleValue = titleElement.value
+        const weightValue = weightElement.value
+        const dateValue = dateElement.value
+        const warrantyPeriodValue = warrantyPeriodElement.value
+
+        const productTypeIdValue = productTypeElement.value
+        const productLineIdValue = productLineElement.value
+        const deliveryTypeIdValue = deliveryTypeElement.value
+        const warrantyTypeIdValue = warrantyTypeElement.value
+
+        const data = {
+            id: idValue,
+            title: titleValue,
+            weight: weightValue,
+            date: dateValue,
+            warrantyPeriod: warrantyPeriodValue,
+
+            productType: productTypeIdValue,
+            productLine: productLineIdValue,
+            deliveryType: deliveryTypeIdValue,
+            warrantyType: warrantyTypeIdValue,
+        };
+
+        const res = await sendSaveRequest(data);
+
+        console.log(res)
+        if (res == null) {
+            alert("Возникла проблема с вашими полями")
+            return;
+        }
+        console.log("reboot")
+        window.location.href = '/editor/'+res.id;
+    }
+
+    async function sendSaveRequest(data) {
+        console.log("Функция сохранения вызвана")
+        try {
+            const response = await fetch("/product/save", {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+                return json;
+            } else {
+                throw new Error('Response not OK');
+            }
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+</script>
 </html>
