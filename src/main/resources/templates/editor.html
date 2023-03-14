@@ -339,7 +339,7 @@
             fieldError = false
             titleElement.className = ''
         }
-        if(0 > weightValue || weightValue > 50 || weightValue == ''){
+        if(/^\d+(\.\d+)*$/.test(weightValue) == false || 0 > weightValue || weightValue > 50 || weightValue == ''){
             fieldError = true
             weightElement.className = 'empty_field'
         }
