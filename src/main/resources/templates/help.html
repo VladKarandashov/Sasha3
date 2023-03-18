@@ -25,6 +25,12 @@
     https://data.world/datafiniti/electronic-products-and-pricing-data <br>
     Работу выполнил студент группы ИВТ-Б20 - Офицеров Александр
 </p>
-
+Current Time: <span id="time" th:text="${time}"></span>
 </body>
+<script th:inline="javascript">
+    var eventSource = new EventSource('/time-events');
+    eventSource.onmessage = function(event) {
+        document.getElementById('time').innerHTML = event.data;
+    };
+</script>
 </html>
