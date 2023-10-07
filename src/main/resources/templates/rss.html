@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Фильмы</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h1>RSS лента</h1>
+<br>
+
+<div th:each="news1 : ${news}">
+    <h2 th:text="${news1.title}"></h2>
+    <p th:text="${news1.description}"></p>
+    <p>
+        <a th:href="${news1.link}">Подробнее</a>
+    </p>
+    <p th:text="${news1.author}"></p>
+    <p th:text="${news1.pubDate}"></p>
+    <img th:if="${news1.imageLink}" th:src="@{${news1.imageLink}}" alt="" style="max-height: 200px;">
+    <hr>
+    <br>
+</div>
+</body>
+</html>
