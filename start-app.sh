@@ -23,8 +23,8 @@ tmux list-sessions
 sleep 3
 tmux ls
 
-echo "Рестартуем nginx"
-sleep 3
-sudo systemctl restart nginx
-sleep 3
-sudo systemctl status nginx
+#echo "Рестартуем nginx"
+#sleep 3
+#sudo systemctl restart nginx
+#sleep 3
+#sudo systemctl status nginx
