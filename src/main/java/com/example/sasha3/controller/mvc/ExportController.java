@@ -20,4 +20,10 @@ public class ExportController {
         exportService.fillModel(model);
         return "/export";
     }
+
+    @GetMapping("/XML")
+    public String getHelpHTML(Model model) {
+        exportService.fillModel(model);
+        return "/exportXML";
+    }
 }

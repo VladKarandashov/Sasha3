@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Экспорт</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>XML</h1>
+<br>
+<button onclick="exportProducts()">Выгрузка файла БД</button>
+<br>
+<br>
+<label for="searchInput">Поиск</label>
+<input type="text" id="searchInput" placeholder="">
+<br>
+<hr>
+<table id="myTable" DIR=LTR BORDER>
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)">ID</th>
+        <th onclick="sortTable(1)">Название</th>
+        <th onclick="sortTable(2)">Вес</th>
+        <th onclick="sortTable(3)">Дата</th>
+        <th onclick="sortTable(4)">Срок гарантии</th>
+        <th onclick="sortTable(5)">Тип гарантии</th>
+        <th onclick="sortTable(6)">Тип продукта</th>
+        <th onclick="sortTable(7)">Директор линии</th>
+        <th onclick="sortTable(8)">Тип доставки</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.title}"></td>
+        <td th:text="${product.weight}"></td>
+        <td th:text="${product.date}"></td>
+        <td th:text="${product.warrantyPeriod}"></td>
+
+        <td th:text="${product.warrantyType != null} ? ${product.warrantyType.title} : '-'"></td>
+        <td th:text="${product.productType != null} ? ${product.productType.title} : '-'"></td>
+        <td th:text="${product.productLine != null} ? ${product.productLine.title} : '-'"></td>
+        <td th:text="${product.deliveryType != null} ? ${product.deliveryType.title} : '-'"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<script>
+    function exportProducts() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/export' + '/file', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+<script>
+    function sortTable(column) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("myTable");
+        switching = true;
+        dir = "asc";
+
+        while (switching) {
+            switching = false;
+            rows = table.getElementsByTagName("TR");
+
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[column];
+                y = rows[i + 1].getElementsByTagName("TD")[column];
+
+                if (dir == "asc") {
+                    if (isNumeric(x.innerHTML) && isNumeric(y.innerHTML)) {
+                        if (parseFloat(x.innerHTML) > parseFloat(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                } else if (dir == "desc") {
+                    if (isNumeric(x.innerHTML) && isNumeric(y.innerHTML)) {
+                        if (parseFloat(x.innerHTML) < parseFloat(y.innerHTML)) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+
+        var ths = table.getElementsByTagName("TH");
+        for (i = 0; i < ths.length; i++) {
+            ths[i].classList.remove("asc");
+            ths[i].classList.remove("desc");
+        }
+
+        if (dir == "asc") {
+            ths[column].classList.add("asc");
+        } else if (dir == "desc") {
+            ths[column].classList.add("desc");
+        }
+    }
+
+    function isNumeric(str) {
+        return !isNaN(parseFloat(str)) && isFinite(str);
+    }
+</script>
+<script>
+    // Получаем ссылки на элементы DOM
+    const searchInput = document.getElementById('searchInput');
+    const table = document.querySelector('table');
+    const rows = table.getElementsByTagName('tr');
+
+    // Добавляем обработчик события для ввода в текстовое поле
+    searchInput.addEventListener('keyup', function () {
+        const searchText = searchInput.value.toLowerCase();
+
+        // Проходимся по каждой строке таблицы, кроме заголовка
+        for (let i = 1; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            let shouldHide = true;
+
+            // Проверяем содержимое каждой ячейки на соответствие фразе поиска
+            for (let j = 0; j < cells.length; j++) {
+                const cellText = cells[j].innerText.toLowerCase();
+
+                if (cellText.includes(searchText)) {
+                    shouldHide = false;
+                    break;
+                }
+            }
+
+            // Скрываем или отображаем строку в зависимости от результата поиска
+            if (shouldHide) {
+                rows[i].style.display = 'none';
+            } else {
+                rows[i].style.display = '';
+            }
+        }
+    });
+</script>
+</html>

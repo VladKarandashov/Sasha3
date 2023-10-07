@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Помощь</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+<h1>Наши партнёры</h1>
+<hr>
+
+<br> <br>
+
+<p class="p">
+    <img width="500px," src="/images/img_1.png" alt="Росатом"> <br>
+    ГОСУДАРСТВЕННАЯ КОРПОРАЦИЯ ПО АТОМНОЙ ЭНЕРГИИ "РОСАТОМ" <br>
+    Адрес: 119017, Г.МОСКВА, УЛ. БОЛЬШАЯ ОРДЫНКА, Д.24 <br>
+    Телефон: +7 (499) 949-40-42 <br>
+    Сайт: <a href="www.rosatom.ru">rosatom.ru</a> <br>
+</p>
+
+<p class="p">
+    <img width="500px," src="/images/img_2.png" alt="Сигнал"> <br>
+    ООО ПСЗ "СИГНАЛ" <br>
+    249035, КАЛУЖСКАЯ ОБЛАСТЬ, ГОРОД ОБНИНСК, Г ОБНИНСК, Г ОБНИНСК, ПР-КТ ЛЕНИНА, Д. 121 <br>
+    Телефон: +7 (910) 912-38-88 <br>
+    Сайт: <a href="https://pz-signal.ru/">pz-signal.ru</a> <br>
+</p>
+</body>
+</html>
