@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Поиск</title>
-    <link rel="stylesheet" href="/css/bar.css"/>
 </head>
 <body>
-<h1>БД Мануфактура</h1>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
 <br>
-<div class="navbar">
-    <a href="/">БД Мануфактура</a>
-    <a href="/editor">Ввод</a>
-    <a href="/search">Поиск</a>
-    <a href="/statistic">Статистика</a>
-    <a href="/help">Помощь</a>
-    <a href="/export">Выгрузка БД</a>
-</div>
+<!--end of Navigation bar-->
 <h1>Поиск</h1>
 <br>
 <table class="center" id="myTable">
