@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:background-color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Мануфактура</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script async src="https://aflt.market.yandex.ru/widget/script/api"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        (function (w) {
+            function start() {
+                w.removeEventListener("YaMarketAffiliateLoad", start);
+                w.YaMarketAffiliate.createWidget({
+                    containerId: "marketWidget5",
+                    type: "models",
+                    params: {
+                        clid: 2310490,
+                        erid: 'AX1LYwMgKYsyMqgz',
+                        searchText: "Умная колонка",
+                        themeId: 5
+                    }
+                });
+            }
+            w.YaMarketAffiliate
+                ? start()
+                : w.addEventListener("YaMarketAffiliateLoad", start);
+        })(window);
+    </script>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+<h2>Виджет интернет-магазина</h2>
+
+<div id="marketWidget5"></div>
+<h2>Карта</h2>
+
+<div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/967/obninsk/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Обнинск</a><a href="https://yandex.ru/maps/967/obninsk/?ll=36.602451%2C55.132945&utm_medium=mapframe&utm_source=maps&z=14" style="color:#eee;font-size:12px;position:absolute;top:14px;">Яндекс Карты — транспорт, навигация, поиск мест</a><iframe src="https://yandex.ru/map-widget/v1/?ll=36.602451%2C55.132945&z=14" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+
+<h2>Виджет посещений сайта</h2>
+
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+<div class="elfsight-app-92c00fc3-74c3-4f8a-aaa7-46e883222ba1"></div>
+
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+<div class="elfsight-app-3a3c4bb1-2e9e-4fd3-8391-774031bfd703"></div>
+
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+<div class="elfsight-app-7323ae29-83a5-4a82-be4a-e84af0124dae"></div>
+
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+<div class="elfsight-app-fadf28ab-edff-4fd7-addd-8cf19eb867bc"></div>
+
+</body>
+</html>
