@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API</title>
+</head>
+<body>
+<!--Navigation bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder"></div>
+<script>
+    $.get("/navbar", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+</script>
+<br>
+<!--end of Navigation bar-->
+
+
+<h1>API текущего времени</h1>
+Для любой мануфактуры крайне важно знать точное текущее время для <br>
+контроля производственных процессов, поэтому я реализовал api на основе <br>
+SSE (Server Sent Events), которое поддерживает текущее время по сети
+<h3>API /time-events</h3>
+Current Time (Server Sent Events): <span id="time" th:text="${time}"></span>
+<hr>
+<br>
+
+<h1>API выгрузки БД в виде файла (бэкап)</h1>
+Для создания резервных копий крайне необходим API для получения файла с базой продуктов
+<h3>API /time-events</h3>
+<button onclick="exportProducts()">Резервная копия БД</button>
+<hr>
+<br>
+
+
+</body>
+<script th:inline="javascript">
+    const eventSource = new EventSource('/time-events');
+    eventSource.onmessage = function(event) {
+        document.getElementById('time').innerHTML = event.data;
+    };
+</script>
+
+<script>
+    function exportProducts() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/export' + '/file', true);
+        xhr.responseType = 'blob';
+        xhr.onload = function () {
+            if (this.status === 200) {
+                const blob = new Blob([this.response], {type: 'application/json'});
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const contentName = xhr.getResponseHeader('Content-Disposition');
+                const filename = contentName.substring(20);
+                console.log(contentName)
+                console.log(filename);
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        };
+        xhr.send();
+    }
+</script>
+</html>
