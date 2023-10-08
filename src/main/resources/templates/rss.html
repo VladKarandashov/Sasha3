@@ -13,11 +13,49 @@
         $("#nav-placeholder").replaceWith(data);
     });
 </script>
+<script>
+    function checkJSessionID() {
+        var cookies = document.cookie.split(";"); // Получаем все куки
+
+        // Проверяем каждую куку
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+
+            // Если кука с именем JSESSIONID найдена
+            if (cookie.indexOf("JSESSIONID=") === 0) {
+                // Создаем кнопки
+                var editorButton = document.createElement("button");
+                editorButton.innerHTML = "Редактор rss лент";
+
+                var newsButton = document.createElement("button");
+                newsButton.innerHTML = "Новая новость";
+
+                // Устанавливаем функции обработчики события нажатия кнопки
+                editorButton.onclick = function() {
+                    window.location.href = "/rss/urls";
+                };
+
+                newsButton.onclick = function() {
+                    window.location.href = "/rss/new";
+                };
+
+                // Добавляем кнопки на страницу
+                document.body.appendChild(editorButton);
+                document.body.appendChild(newsButton);
+
+                break; // Завершаем цикл, так как уже найдена кука JSESSIONID
+            }
+        }
+    }
+</script>
 <br>
 <!--end of Navigation bar-->
 
 <h1>Новостная лента</h1>
 <br>
+<script>checkJSessionID()</script>
+<br>
+<hr>
 
 <div th:each="news1 : ${news}">
     <h2 th:text="${news1.title}"></h2>

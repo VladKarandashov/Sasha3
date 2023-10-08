@@ -13,6 +13,11 @@
         $("#nav-placeholder").replaceWith(data);
     });
 </script>
+<script>
+    function refreshPage() {
+        location.reload();
+    }
+</script>
 <br>
 <!--end of Navigation bar-->
 <h1>XML</h1>
@@ -22,6 +27,8 @@
 <br>
 <label for="searchInput">Поиск</label>
 <input type="text" id="searchInput" placeholder="">
+<br>
+<button onclick="refreshPage()">Новый поиск</button>
 <br>
 <hr>
 <table id="myTable" DIR=LTR BORDER>
@@ -53,6 +60,11 @@
     </tr>
     </tbody>
 </table>
+<br>
+<br>
+<br>
+<br>
+<br>
 <!--footer bar-->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <div id="nav-placeholder-footer"></div>
@@ -61,7 +73,6 @@
         $("#nav-placeholder-footer").replaceWith(data);
     });
 </script>
-<br>
 <!-- end footer bar-->
 </body>
 <script>
