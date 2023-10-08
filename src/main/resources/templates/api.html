@@ -3,13 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>API</title>
+    <script>
+        function filterAttributes(data) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const filteredData = [];
+
+            for (let i = 0; i < data.length; i++) {
+                const obj = data[i];
+                const filteredObj = {};
+
+                for (let j = 0; j < checkboxes.length; j++) {
+                    const checkbox = checkboxes[j];
+
+                    if (checkbox.checked) {
+                        const attribute = checkbox.name.replace('Enabled', '');
+                        filteredObj[attribute] = obj[attribute];
+                    }
+                }
+
+                filteredData.push(filteredObj);
+            }
+
+            return filteredData;
+        }
+
+        function searchProducts() {
+            var xhr = new XMLHttpRequest();
+
+            var productType = document.getElementById("productType").value
+            var deliveryType = document.getElementById("deliveryType").value
+            var warrantyType = document.getElementById("warrantyType").value
+
+            var path = '/api/search?'
+            if (productType !== "0") path += "idProductType="+productType+"&";
+            if (deliveryType !== "0") path += "idDeliveryType="+deliveryType+"&";
+            if (warrantyType !== "0") path += "idWarrantyType="+warrantyType;
+            console.log(path)
+
+            xhr.open('GET', path, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    const filteredResponse = filterAttributes(response);
+                    document.getElementById('result3').value = JSON.stringify(filteredResponse, null, 4);
+                    document.getElementById("countRecords").innerHTML = "Получено "+response.length+" продуктов"
+                }
+            };
+            xhr.send();
+        }
+    </script>
+    <style>
+        textarea {
+            width: 600px;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
 <!--Navigation bar-->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <div id="nav-placeholder"></div>
 <script>
-    $.get("/navbar", function(data){
+    $.get("/navbar", function (data) {
         $("#nav-placeholder").replaceWith(data);
     });
 </script>
@@ -21,23 +76,114 @@
 Для любой мануфактуры крайне важно знать точное текущее время для <br>
 контроля производственных процессов, поэтому я реализовал api на основе <br>
 SSE (Server Sent Events), которое поддерживает текущее время по сети
-<h3>API /time-events</h3>
+<h3>GET /time-events</h3>
 Current Time (Server Sent Events): <span id="time" th:text="${time}"></span>
 <hr>
 <br>
 
 <h1>API выгрузки БД в виде файла (бэкап)</h1>
 Для создания резервных копий крайне необходим API для получения файла с базой продуктов
-<h3>API /time-events</h3>
+<h3>GET /export/file</h3>
 <button onclick="exportProducts()">Резервная копия БД</button>
 <hr>
 <br>
 
+<h1>API поиска с возможностью выбрать атрибуты</h1>
+<p>
+    API для поиска продукта по типу и/или доставке и/или гарантии. <br>
+    Все критерии передаются через query params. <br>
+    Если нам не важен какой-то из критериев - его нужно просто не передавать. <br>
+    <br>
+    Этот функционал можно протестировать ниже. <br>
+    Обратите внимание, что функционал "связанного" поиска не может быть здесь реализован, <br>
+    так как вызывающая сторона может посылать любые параметры и сервер не в силах этому помешать. <br>
+    API может вернуть пустой список!!!
+</p>
+<h3>GET /export/search?productType={1}&warrantyType={2}&deliveryType={3}</h3>
+<table class="center" id="myTable">
+    <thead>
+    <tr>
+        <th>Категория</th>
+        <th>Поле выбора</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><label for="productType">Тип продукта:</label></td>
+        <td>
+            <select id="productType" name="productType">
+                <option th:value="0">Любой</option>
+                <option th:each="productType : ${productTypes}"
+                        th:value="${productType.id}"
+                        th:selected="${productType.id == idProductType}"
+                        th:text="${productType.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="deliveryType">Тип доставки:</label></td>
+        <td>
+            <select id="deliveryType" name="deliveryType">
+                <option th:value="0">Любой</option>
+                <option th:each="deliveryType : ${deliveryTypes}"
+                        th:value="${deliveryType.id}"
+                        th:selected="${deliveryType.id == idDeliveryType}"
+                        th:text="${deliveryType.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td><label for="warrantyType">Тип гарантии:</label></td>
+        <td>
+            <select id="warrantyType" name="warrantyType">
+                <option th:value="0">Любой</option>
+                <option th:each="warrantyType : ${warrantyTypes}"
+                        th:value="${warrantyType.id}"
+                        th:selected="${warrantyType.id == idWarrantyType}"
+                        th:text="${warrantyType.title}">
+                </option>
+            </select>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<label for="idEnabled">ID</label>
+<input type="checkbox" id="idEnabled" name="idEnabled" checked>
+<label for="titleEnabled">Title</label>
+<input type="checkbox" id="titleEnabled" name="titleEnabled" checked>
+<label for="weightEnabled">Weight</label>
+<input type="checkbox" id="weightEnabled" name="weightEnabled" checked>
+<label for="dateEnabled">Date</label>
+<input type="checkbox" id="dateEnabled" name="dateEnabled" checked>
+<label for="warrantyPeriodEnabled">Warranty Period</label>
+<input type="checkbox" id="warrantyPeriodEnabled" name="warrantyPeriodEnabled" checked>
+<label for="productTypeEnabled">Product Type</label>
+<input type="checkbox" id="productTypeEnabled" name="productTypeEnabled" checked>
+<label for="productLineEnabled">Product Line</label>
+<input type="checkbox" id="productLineEnabled" name="productLineEnabled" checked>
+<label for="warrantyTypeEnabled">Warranty Type</label>
+<input type="checkbox" id="warrantyTypeEnabled" name="warrantyTypeEnabled" checked>
+<label for="deliveryTypeEnabled">Delivery Type</label>
+<input type="checkbox" id="deliveryTypeEnabled" name="deliveryTypeEnabled" checked>
+<br>
+<button onclick="searchProducts()">Искать</button>
+<label id="countRecords">Апи не вызывалась</label><br>
+<textarea id="result3" readonly></textarea>
+<hr>
+<br>
+
+<br>
+<br>
+<br>
+<br>
 <!--footer bar-->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <div id="nav-placeholder-footer"></div>
 <script>
-    $.get("/footer", function(data){
+    $.get("/footer", function (data) {
         $("#nav-placeholder-footer").replaceWith(data);
     });
 </script>
@@ -46,7 +192,7 @@ Current Time (Server Sent Events): <span id="time" th:text="${time}"></span>
 </body>
 <script th:inline="javascript">
     const eventSource = new EventSource('/time-events');
-    eventSource.onmessage = function(event) {
+    eventSource.onmessage = function (event) {
         document.getElementById('time').innerHTML = event.data;
     };
 </script>

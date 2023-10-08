@@ -1,6 +1,7 @@
 package com.example.sasha3.model.entity;
 
 import com.example.sasha3.model.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ public class ProductEntity extends BaseEntity {
     @ManyToOne(cascade = {CascadeType.ALL})
     private DeliveryTypeEntity deliveryType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product", cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<OrderLink> orders;
