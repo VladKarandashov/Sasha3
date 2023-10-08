@@ -12,4 +12,9 @@ public class NavbarController {
     public String getNavBar() {
         return "/components/navigationBar";
     }
+
+    @GetMapping("/footer")
+    public String getFooter() {
+        return "/components/floor";
+    }
 }

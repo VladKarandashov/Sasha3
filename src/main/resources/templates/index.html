@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Главная</title>
-    <meta name="yandex-verification" content="7a251cb6c2e209e3" />
 </head>
 <body>
+
 <!--Navigation bar-->
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <div id="nav-placeholder"></div>
@@ -16,19 +16,28 @@
 </script>
 <br>
 <div id="ya-site-results" data-bem="{&quot;tld&quot;: &quot;ru&quot;,&quot;language&quot;: &quot;ru&quot;,&quot;encoding&quot;: &quot;&quot;,&quot;htmlcss&quot;: &quot;1.x&quot;,&quot;updatehash&quot;: true}"></div><script type="text/javascript">(function(w,d,c){var s=d.createElement('script'),h=d.getElementsByTagName('script')[0];s.type='text/javascript';s.async=true;s.charset='utf-8';s.src=(d.location.protocol==='https:'?'https:':'http:')+'//site.yandex.net/v2.0/js/all.js';h.parentNode.insertBefore(s,h);(w[c]||(w[c]=[])).push(function(){Ya.Site.Results.init();})})(window,document,'yandex_site_callbacks');</script>
-
-
-
 <!--end of Navigation bar-->
+
 <h1>Главная страница</h1>
 <br>
 <p>
-    Данная БД была создана для хранения/редактирования информации о <br>
-    продуктах на производстве, а также быстром поиске по параметрам <br>
-    Использовалась информация, представленная в открытом виде, на сайте: <br>
-    https://data.world/datafiniti/electronic-products-and-pricing-data <br>
-    Работу выполнил студент группы ИВТ-Б20 - Офицеров Александр
+    Добро пожаловать в базу данных "Мануфактура"! <br>
+    Для работы с сайтом воспользуйтесь меню, которое находится сверху сайта. <br>
+    На сайте реализована работа с базой данных, а также предоставлена информация о БД и предметной области. <br>
+    Прошу обратить внимание, что для добавления данных потребуется авторизоваться (войти в учётную запись или <br> зарегистрироваться, если у вас её нет). <br>
+    Приятной работы!
 </p>
+
+<!--footer bar-->
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<div id="nav-placeholder-footer"></div>
+<script>
+    $.get("/footer", function(data){
+        $("#nav-placeholder-footer").replaceWith(data);
+    });
+</script>
+<br>
+<!-- end footer bar-->
 
 </body>
 </html>
