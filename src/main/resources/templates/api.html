@@ -27,6 +27,78 @@
             return filteredData;
         }
 
+        function displayTable(data) {
+            // Получаем элемент таблицы со страницы
+            var table = document.getElementById("table");
+
+            // Очистка таблицы перед отображением новых данных
+            table.innerHTML = "";
+
+            // Создаем заголовок таблицы
+            var thead = document.createElement("thead");
+            var tr = document.createElement("tr");
+
+            // Получаем поля из первого объекта списка данных
+            if (data[0] !== null && data[0] !== undefined) {
+                var fields = Object.keys(data[0]);
+            } else {
+                return;
+            }
+
+
+            // Создаем ячейки заголовка и добавляем их в строку заголовка
+            fields.forEach(function(field) {
+                var th = document.createElement("th");
+
+                // Если поле имеет формат { "id": 1, "title": "Иванов И.И." }, берем значение из поля "title"
+                if (field.charAt(0).toLowerCase() === "title") {
+                    th.textContent = "title";
+                } else {
+                    th.textContent = field;
+                }
+
+                tr.appendChild(th);
+            });
+
+            // Добавляем строку заголовка в заголовок таблицы
+            thead.appendChild(tr);
+
+            // Добавляем заголовок таблицы в таблицу
+            table.appendChild(thead);
+
+            // Создаем тело таблицы
+            var tbody = document.createElement("tbody");
+
+            // Перебираем каждый объект в списке данных
+            data.forEach(function(item) { // item - это объект продукта
+                var tr = document.createElement("tr");
+
+                // Перебираем поля объекта и создаем ячейки с соответствующими значениями
+                fields.forEach(function(field) {
+                    var td = document.createElement("td");
+
+                    // Если поле имеет формат { "id": 1, "title": "Иванов И.И." }, берем значение из поля "title"
+                    if (item.hasOwnProperty(field)) {
+                        if (item[field].hasOwnProperty("title")) {
+                            td.textContent = item[field]["title"];
+                        } else {
+                            td.textContent = item[field];
+                        }
+                    } else {
+                        td.textContent = "-";
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                // Добавляем строку с данными в тело таблицы
+                tbody.appendChild(tr);
+            });
+
+            // Добавляем тело таблицы в таблицу
+            table.appendChild(tbody);
+        }
+
         function searchProducts() {
             var xhr = new XMLHttpRequest();
 
@@ -45,6 +117,7 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     const filteredResponse = filterAttributes(response);
+                    displayTable(filteredResponse);
                     document.getElementById('result3').value = JSON.stringify(filteredResponse, null, 4);
                     document.getElementById("countRecords").innerHTML = "Получено "+response.length+" продуктов"
                 }
@@ -173,7 +246,7 @@ Current Time (Server Sent Events): <span id="time" th:text="${time}"></span>
 <label id="countRecords">Апи не вызывалась</label><br>
 <textarea id="result3" readonly></textarea>
 <hr>
-<br>
+<table DIR=LTR BORDER id="table"></table>
 
 <br>
 <br>
